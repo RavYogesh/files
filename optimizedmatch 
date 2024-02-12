@@ -1,0 +1,33 @@
+import numpy as np
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+
+# Read the input file into a pandas dataframe
+import pandas as pd
+df = pd.read_excel ('utterances.xlsx')
+
+# Initialize the vectorizer
+vectorizer = TfidfVectorizer ()
+
+# Vectorize the input file and store it in a global variable
+X = vectorizer.fit_transform (df['utterance'])
+
+# Define the match_keyword function that uses the global variable
+def match_keyword (keyword):
+  global X # use the global variable
+  keyword_vector = vectorizer.transform ([keyword]) # transform the keyword into a vector
+  scores = cosine_similarity (keyword_vector, X) # compute the similarity scores
+  top_indices = np.argsort (scores) [0] [::-1] # get the indices of the matches in descending order
+  matches = [] # initialize an empty list to store the matches
+  seen_intents = set () # initialize an empty set to store the seen intents
+  for index in top_indices: # loop through the indices
+    intent = df.loc [index, 'intent'] # get the intent
+    if intent not in seen_intents: # check if the intent is not already seen
+      seen_intents.add (intent) # add the intent to the seen set
+      utterance = df.loc [index, 'utterance'] # get the utterance
+      score = scores [0] [index] # get the score
+      if score > 0.7 and len (utterance.split ()) >= 3: # check if the score is above 0.7 and the utterance has at least three words
+        matches.append ({'utterance': utterance, 'intent': intent, 'score': score}) # append a dictionary with the utterance, intent, and score to the list
+        if len (matches) == 5: # check if the list has 5 matches
+          break # stop the loop
+  return matches # return the list of matches
