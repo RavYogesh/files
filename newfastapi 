@@ -1,0 +1,49 @@
+import pandas as pd
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+from fastapi import FastAPI, HTTPException
+
+# Read the Excel file
+df = pd.read_excel('your_excel_file.xlsx')
+
+# Create a TF-IDF vectorizer
+tfidf_vectorizer = TfidfVectorizer()
+tfidf_matrix = tfidf_vectorizer.fit_transform(df['utterance'])
+
+# Initialize FastAPI app
+app = FastAPI()
+
+# Function to find similar utterances for a given keyword with specified minimum similarity and minimum word length
+def find_matching_utterances(keyword, min_similarity=0.6, min_words=3):
+    keyword_vector = tfidf_vectorizer.transform([keyword])
+    all_utterances = df['utterance'].tolist()
+    all_intents = df['intent'].tolist()
+    unique_intents = set(all_intents)
+    matching_utterances = []
+
+    for intent in unique_intents:
+        intent_indices = [i for i, x in enumerate(all_intents) if x == intent]
+        intent_matrix = tfidf_matrix[intent_indices]
+        cosine_similarities = cosine_similarity(keyword_vector, intent_matrix)
+        for idx, similarity in enumerate(cosine_similarities[0]):
+            if similarity >= min_similarity and len(all_utterances[intent_indices[idx]].split()) >= min_words:
+                matching_utterances.append({
+                    'utterance': all_utterances[intent_indices[idx]],
+                    'intent': intent,
+                    'similarity_score': similarity
+                })
+
+    # Sort the matching utterances by similarity score in descending order
+    matching_utterances = sorted(matching_utterances, key=lambda x: x['similarity_score'], reverse=True)
+
+    # Return top 5 matching utterances
+    return matching_utterances[:5]
+
+# FastAPI endpoint to find matching utterances for a keyword
+@app.post("/find_matching_utterances/")
+async def find_matching_utterances_endpoint(keyword: str):
+    try:
+        matching_utterances = find_matching_utterances(keyword)
+        return {"matching_utterances": matching_utterances}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
