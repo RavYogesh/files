@@ -1,6 +1,3 @@
-Here's the Python code that achieves what you described:
-
-```python
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
@@ -43,6 +40,3 @@ def find_similar_handler():
 
 if __name__ == '__main__':
     app.run(debug=True)
-```
-
-This code reads the Excel file, calculates the TF-IDF matrix, and then finds the top 5 similar utterances from unique intents that match the given keyword. The Flask server exposes an endpoint `/find_similar` that accepts POST requests with JSON data containing the keyword. It then returns a JSON response containing the top matching utterances and their respective intents.
