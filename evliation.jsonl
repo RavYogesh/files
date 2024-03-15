@@ -1,0 +1,29 @@
+{"text": "The weather is amazing today!", "label": "positive"}
+{"text": "I'm feeling very optimistic about the future.", "label": "positive"}
+{"text": "This is a groundbreaking discovery!", "label": "positive"}
+{"text": "The movie was a total disappointment.", "label": "negative"}
+{"text": "I would never recommend this product to anyone.", "label": "negative"}
+{"text": "The service was terrible and unprofessional.", "label": "negative"}
+{"text": "This trip was an adventure I'll never forget.", "label": "positive"}
+{"text": "The product failed to meet my expectations.", "label": "negative"}
+{"text": "This article is full of insightful information.", "label": "positive"}
+{"text": "The commute to work is unbearable every day.", "label": "negative"}
+{"text": "I'm having a very productive day at work.", "label": "positive"}
+{"text": "The food was bland and uninspired.", "label": "negative"}
+{"text": "The instructions were unclear and difficult to follow.", "label": "negative"}
+{"text": "I'm so thankful for the support of my friends and family.", "label": "positive"}
+{"text": "The meeting was a complete failure.", "label": "negative"}
+{"text": "This company offers a positive and supportive work environment.", "label": "positive"}
+{"text": "The flight was cancelled due to bad weather.", "label": "negative"}
+{"text": "I gained valuable knowledge from this workshop.", "label": "positive"}
+{"text": "The movie had a convoluted and confusing plot.", "label": "negative"}
+{"text": "The weather is awful today!", "label": "negative"}
+{"text": "I'm feeling very discouraged and disappointed.", "label": "negative"}
+{"text": "This is a frustrating and challenging task.", "label": "negative"}
+{"text": "The movie exceeded my expectations and was thoroughly enjoyable.", "label": "positive"}
+{"text": "I would definitely recommend this service to others.", "label": "positive"}
+{"text": "The service was exceptional and exceeded my expectations.", "label": "positive"}
+{"text": "This hike was a beautiful and rewarding experience.", "label": "positive"}
+{"text": "The product was easy to use and functioned perfectly.", "label": "positive"}
+{"text": "This article presented an uninteresting and biased perspective.", "label": "negative"}
+{"text": "The traffic is bumper-to-bumper this evening.", "label": "negative"}
