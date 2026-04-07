@@ -645,3 +645,15 @@ Phase 1 — Baseline profiling (no quantization): measure memory (KV cache size)
 Phase 2 — Apply TurboQuant KV compression: hook into attention layers, apply PolarQuant + QJL to K/V tensors at runtime at different bit widths (2-bit, 3-bit, 4-bit).
 Phase 3 — Quality validation: run LongBench tasks (QA, summarization, code) and a Needle-in-Haystack test to replicate the paper's evaluation.
 Phase 4 — Efficiency delta report: compare memory footprint, throughput (tokens/sec), and quality (exact match / ROUGE / F1) across all configurations.
+
+
+2. Validation Plan
+To validate the paper's findings, you need to compare Standard Quantization (4-bit/8-bit) against Extreme Compression (TurboQuant/Sub-8-bit) across three axes: Quality, Speed, and Memory.
+Phase 1: Environment Setup
+Hardware: You need an NVIDIA GPU (preferably Ampere/A100/H100 or later, as TurboQuant relies on modern tensor core features).
+Library: You will likely need PyTorch, AutoGPTQ or AutoRound (which are beginning to implement these research-grade sub-8-bit optimizations).
+Phase 2: Benchmarking Metrics
+TTFT (Time to First Token): How fast the prefill stage is.
+TPS (Tokens Per Second): The decoding speed (where TurboQuant shines).
+VRAM Footprint: Maximum memory used during inference.
+Perplexity (WikiText-2): To see if the "Extreme Compression" destroyed the model's intelligence.
