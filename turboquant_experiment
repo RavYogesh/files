@@ -608,3 +608,17 @@ if __name__ == "__main__":
             output_file=args.output,
         )
         run_experiment(cfg)
+
+
+##how to run:
+# Install deps
+pip install transformers torch accelerate datasets rouge-score tqdm numpy
+
+# Fast sanity check (no model needed, tests distortion math only)
+python turboquant_experiment.py --distortion_only --bits 2 3 4
+
+# Full experiment on Gemma 3 1B
+python turboquant_experiment.py --model google/gemma-3-1b-it --bits 2 3 4
+
+# Or a larger model if you have the VRAM
+python turboquant_experiment.py --model google/gemma-3-4b-it --bits 3 4
