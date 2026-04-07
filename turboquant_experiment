@@ -622,3 +622,26 @@ python turboquant_experiment.py --model google/gemma-3-1b-it --bits 2 3 4
 
 # Or a larger model if you have the VRAM
 python turboquant_experiment.py --model google/gemma-3-4b-it --bits 3 4
+
+
+Plan :
+
+TurboQuant Experimentation Plan
+What TurboQuant actually does (the key insight for your experiments)
+TurboQuant is a KV cache compression algorithm that works in two stages: first, PolarQuant rotates and quantizes vectors into polar coordinates to eliminate memory overhead; then QJL uses a 1-bit Johnson-Lindenstrauss trick to zero out residual error. research
+The paper demonstrated that TurboQuant can quantize the KV cache down to just 3 bits without any training or fine-tuning, while achieving up to 8x speedup in attention logit computation on H100 GPUs. research
+
+🔑 Cloud vs On-Prem: Which to use for this experiment?
+Use on-prem models (Gemma 3 / GPT OSS). Here's why:
+
+TurboQuant operates on the KV cache — you need white-box access to model internals (attention layers, KV tensors). Cloud APIs (Gemini, ChatGPT, Claude) are black boxes; you cannot intercept or modify their KV caches.
+The paper itself validated on open-source LLMs — Gemma and Mistral — precisely because they allow internal hook access. research
+Gemma 3 is a perfect subject: same model family as the paper's test models, and you already have it.
+
+
+Experiment Plan
+Here's a structured 4-phase plan:
+Phase 1 — Baseline profiling (no quantization): measure memory (KV cache size), tokens/sec, and quality scores on standard benchmarks.
+Phase 2 — Apply TurboQuant KV compression: hook into attention layers, apply PolarQuant + QJL to K/V tensors at runtime at different bit widths (2-bit, 3-bit, 4-bit).
+Phase 3 — Quality validation: run LongBench tasks (QA, summarization, code) and a Needle-in-Haystack test to replicate the paper's evaluation.
+Phase 4 — Efficiency delta report: compare memory footprint, throughput (tokens/sec), and quality (exact match / ROUGE / F1) across all configurations.
